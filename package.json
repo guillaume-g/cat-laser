@@ -11,5 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "johnny-five": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/johnny-five": "^1.3.0"
   }
 }

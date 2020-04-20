@@ -1,22 +1,27 @@
-const five = require("johnny-five");
-const board = new five.Board();
-
-const minX = 120;
-const minY = 50;
-const maxX = 180;
-const maxY = 80;
+const { Board, Servo, Led } = require("johnny-five");
+const board = new Board();
 
 board.on("ready", function () {
-	var servoX = new five.Servo(11);
-	var servoY = new five.Servo(10);
-	this.repl.inject({
-		servoX: servoX,
-		servoY: servoY
+	const led = new Led(13);
+	const servoH = new Servo({
+		pin: 8,
+		range: [0, 90],
+		startAt: 0,
 	});
-	setInterval(() => {
-		const X = Math.floor(Math.random() * maxX) + minX;
-		const Y = Math.floor(Math.random() * maxY) + minY;
-		servoY.to(Y);
-		servoX.to(X);
-	}, 2000);
+	const servoV = new Servo({
+		pin: 3,
+		range: [120, 180],
+		startAt: 180,
+	});
+
+	led.blink(500);
+
+	servoH.sweep();
+	servoV.sweep();
+
+	board.on("exit", () => {
+		led.off();
+		servoV.stop();
+		servoH.stop();
+	})
 });
